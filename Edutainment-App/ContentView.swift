@@ -8,19 +8,14 @@
 import SwiftUI
 
 
-struct GameSettings: View {
-    var body: some View {
-        Text("TESTING VIEW")
-    }
-}
-
 
 struct ContentView: View {
     
     @State private var stageSelection : Int = 0
     @State private var ranNum = 0
-    
+    @State private var tryAnswer = ""
     @State private var correctAnswer = 0
+    @State private var score = 0
       
     var body: some View {
         NavigationView{
@@ -49,10 +44,14 @@ struct ContentView: View {
                     }
                 }
                 Section {
-                    Text("ANSWER")
+                    TextField("ENTER ANSWER: ", text: $tryAnswer, onCommit: AnswerChecker)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .autocapitalization(.none)
+                        .padding()
+                        .keyboardType(.decimalPad)
                 }
                 Section {
-                    Text("SCORE")
+                    Text("SCORE: \(score)")
                 }
             }
             .navigationTitle("Edutainment")
@@ -66,11 +65,36 @@ struct ContentView: View {
     func QuestionMake(){
         correctAnswer = stageSelection * ranNum
     }
+    
+    
+    
+    
+    
+    func AnswerChecker() {
+        var rn = Int(tryAnswer)
         
+        if rn == correctAnswer {
+            score += 1
+        }else {
+            ButtonClicked()
+        }
+        
+    }
     
 }
 
 
+struct GameSettings: View {
+    
+    @Binding var stageSelection : Int
+    @Binding var ranNum : Int
+    @Binding private var tryAnswer : String
+    @Binding private var correctAnswer : Int
+    
+    var body: some View {
+        Text("TESTING VIEW")
+    }
+}
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
